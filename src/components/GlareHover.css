@@ -1,0 +1,27 @@
+.glare-hover{
+  width:var(--gh-width);
+  height:var(--gh-height);
+  background:var(--gh-bg);
+  border-radius:var(--gh-br);
+  border:1px solid var(--gh-border);
+  overflow:hidden;
+  position:relative;
+}
+.glare-hover::before{
+  content:'';
+  position:absolute;
+  z-index:4;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  background:linear-gradient(var(--gh-angle),transparent 58%,var(--gh-rgba) 69%,transparent 78%);
+  transition:background-position var(--gh-duration) cubic-bezier(.22,.61,.36,1);
+  background-size:var(--gh-size) var(--gh-size);
+  background-repeat:no-repeat;
+  background-position:-115% -115%;
+  mix-blend-mode:screen;
+}
+.glare-hover:hover::before{background-position:105% 105%}
+.glare-hover--play-once::before{transition:none}
+.glare-hover--play-once:hover::before{transition:background-position var(--gh-duration) cubic-bezier(.22,.61,.36,1);background-position:105% 105%}
+@media(prefers-reduced-motion:reduce){.glare-hover::before{display:none}}

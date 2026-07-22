@@ -1,0 +1,13 @@
+.dock-project-panel{display:flex;align-items:center;gap:22px;width:max-content;min-width:100%;height:270px;padding:45px 8px 42px 36px}
+.dock-project-item{position:relative;flex:0 0 clamp(220px,18.2vw,286px);height:180px;transform:translate3d(0,0,0) scale(1);transform-origin:center bottom;transition:transform .52s cubic-bezier(.34,1.56,.64,1);backface-visibility:hidden;will-change:transform}
+.dock-project-item:hover{z-index:8;transform:translate3d(0,-7px,0) scale(1.045)}
+.dock-project-item:hover+.dock-project-item,.dock-project-item:has(+.dock-project-item:hover){transform:translate3d(0,-2px,0) scale(1.012);transition-duration:.58s}
+.dock-project-item .hero-card-shell{animation:card-idle-float 8.8s cubic-bezier(.45,.05,.38,.96) infinite;transform-origin:center}
+.dock-project-item:nth-child(2) .hero-card-shell{animation-delay:-2.6s;animation-duration:10.4s;animation-direction:reverse}
+.dock-project-item:nth-child(3) .hero-card-shell{animation-delay:-5.1s;animation-duration:7.6s}
+.dock-project-item:nth-child(4) .hero-card-shell{animation-delay:-1.3s;animation-duration:11.2s;animation-direction:reverse}
+.dock-project-item:nth-child(5) .hero-card-shell{animation-delay:-6.4s;animation-duration:8.1s}
+.dock-project-panel:hover .hero-card-shell{animation-play-state:paused}
+@keyframes card-idle-float{0%,100%{transform:translate3d(0,1px,0) rotate(-.45deg)}18%{transform:translate3d(2px,-3px,0) rotate(.28deg)}41%{transform:translate3d(-2px,-5px,0) rotate(.7deg)}63%{transform:translate3d(3px,-2px,0) rotate(-.22deg)}82%{transform:translate3d(-1px,2px,0) rotate(-.68deg)}}
+@media(prefers-reduced-motion:reduce){.dock-project-item .hero-card-shell{animation:none}}
+@media(max-width:1000px){.dock-project-panel{min-width:max-content}.dock-project-item{flex-basis:260px}}
