@@ -530,9 +530,9 @@ html,body,#root{min-height:100%;overflow-x:clip}
 @media(prefers-reduced-motion:reduce){.works__stage,.works__stage .works-fan__card,.works__stage .circular-gallery,.works__stage .works__empty{animation:none}}
 
 /* 2026 portfolio refinement: aligned career dates, centered project storytelling */
-.experience--redesign .timeline__year{display:grid;grid-template-columns:38px minmax(0,1fr);align-items:start;gap:22px}
-.experience--redesign .timeline__year b{width:100%;align-items:center;text-align:center}
-.experience--redesign .timeline__year b i{margin:6px auto 7px}
+.experience--redesign .timeline__year{display:grid;grid-template-columns:38px 128px;align-items:start;justify-content:start;gap:18px}
+.experience--redesign .timeline__year b{width:128px;align-items:flex-end;text-align:right;transform:translateY(18px)}
+.experience--redesign .timeline__year b i{margin:6px 8px 7px 0}
 
 .project-view__header{grid-template-columns:1fr;justify-items:center;align-items:center;gap:24px;min-height:620px;padding:clamp(110px,10vw,160px) clamp(32px,8vw,140px) clamp(70px,7vw,110px);text-align:center}
 .project-view__ghost-no{left:50%;right:auto;bottom:-.16em;transform:translateX(-50%);font-size:clamp(260px,34vw,560px)}
