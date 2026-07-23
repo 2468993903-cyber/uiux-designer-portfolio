@@ -1,0 +1,67 @@
+.fluid-glass-cursor{
+  --glass-size:32px;
+  position:fixed;
+  z-index:2000;
+  left:0;
+  top:0;
+  width:32px;
+  height:32px;
+  border:1px solid rgba(255,238,218,.46);
+  border-radius:50%;
+  opacity:0;
+  overflow:hidden;
+  pointer-events:none;
+  isolation:isolate;
+  background:radial-gradient(circle at 30% 24%,rgba(255,255,255,.22),transparent 24%),rgba(255,119,42,.07);
+  box-shadow:
+    inset 5px 5px 11px rgba(255,255,255,.07),
+    inset -6px -7px 13px rgba(255,92,28,.07),
+    0 5px 15px rgba(0,0,0,.16);
+  transition:width .1s ease-out,height .1s ease-out,opacity .08s linear,border-color .12s ease,box-shadow .12s ease;
+  will-change:transform;
+}
+.fluid-glass-cursor.is-visible{opacity:1}
+.fluid-glass-cursor.is-pressed{width:26px;height:26px;border-color:rgba(255,238,205,.96);box-shadow:inset 4px 4px 11px rgba(255,255,255,.18),0 0 18px rgba(255,128,44,.48),0 0 36px rgba(255,105,33,.18)}
+.fluid-glass-cursor__refraction{
+  position:absolute;
+  inset:3px;
+  border-radius:50%;
+  background:conic-gradient(from 0deg,transparent 0 58%,rgba(255,249,235,.1) 66%,rgba(255,199,122,.36) 73%,rgba(255,255,255,.78) 78%,transparent 86% 100%);
+  -webkit-mask:radial-gradient(circle,transparent 58%,#000 63% 73%,transparent 78%);
+  mask:radial-gradient(circle,transparent 58%,#000 63% 73%,transparent 78%);
+  animation:fluid-cursor-flow 3.6s linear infinite;
+}
+.fluid-glass-cursor__glint{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#fff7e8;
+  box-shadow:0 0 5px rgba(255,255,255,.95),0 0 11px rgba(255,167,80,.78);
+  transform-origin:0 0;
+  animation:fluid-cursor-orbit 3.6s linear infinite;
+  opacity:.9;
+}
+.fluid-glass-cursor__core{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:5px;
+  height:5px;
+  border:1px solid rgba(255,245,231,.82);
+  border-radius:50%;
+  background:#ff7c36;
+  box-shadow:0 0 10px rgba(255,119,47,.72);
+  transform:translate(-50%,-50%);
+}
+.fluid-glass-cursor.is-pressed .fluid-glass-cursor__core{background:#fff5df;box-shadow:0 0 8px 3px rgba(255,198,111,.9),0 0 22px rgba(255,94,31,.55)}
+@keyframes fluid-cursor-flow{to{transform:rotate(360deg)}}
+@keyframes fluid-cursor-orbit{
+  from{transform:rotate(0deg) translateX(11px) translate(-50%,-50%)}
+  to{transform:rotate(360deg) translateX(11px) translate(-50%,-50%)}
+}
+@media(pointer:fine){body,a,button,[role="button"]{cursor:none!important}}
+@media(pointer:coarse){.fluid-glass-cursor{display:none!important}}
+@media(prefers-reduced-motion:reduce){.fluid-glass-cursor__refraction,.fluid-glass-cursor__glint{animation:none}}
