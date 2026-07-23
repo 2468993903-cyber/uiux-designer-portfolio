@@ -58,9 +58,9 @@ const projects = [
   { id: 'homestead-standard', category: 'pc', title: '宅基地基准版 2.0', en: 'HOMESTEAD STANDARD 2.0', desc: '', meta: 'B-END / WEB', image: '/assets/projects/rural/rural-01.png', gallery: [] },
   { id: 'lanling-web', category: 'pc', title: '兰陵县农村宅基地管理信息系统', en: 'LANLING HOMESTEAD SYSTEM', desc: '', meta: 'B-END / WEB', image: '/assets/projects/rural/rural-04.png', gallery: [] },
   { id: 'lover-bay', category: 'mobile', title: '恋人湾', en: 'LOVER BAY', desc: '', meta: 'MOBILE APP', image: '/assets/card-mobile-v2.png', gallery: [] },
-  { id: 'homestead-assistant', category: 'mobile', title: '宅基地监管助手', en: 'HOMESTEAD ASSISTANT', desc: '', meta: 'MOBILE APP', image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1400&q=88', gallery: [] },
-  { id: 'kerry-red-station', category: 'mobile', title: '嘉里红驿', en: 'KERRY RED STATION', desc: '', meta: 'MOBILE APP', image: 'https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=1400&q=88', gallery: [] },
-  { id: 'warm-reminder', category: 'mobile', title: '暖行叮嘱系统小程序', en: 'WARM REMINDER', desc: '', meta: 'MINI PROGRAM', image: 'https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?auto=format&fit=crop&w=1400&q=88', gallery: [] },
+  { id: 'homestead-assistant', category: 'mobile', title: '宅基地监管助手', en: 'HOMESTEAD ASSISTANT', desc: '', meta: 'MOBILE APP', image: '/assets/projects/mobile/cover-homestead-assistant.png', gallery: [] },
+  { id: 'kerry-red-station', category: 'mobile', title: '嘉里红驿', en: 'KERRY RED STATION', desc: '', meta: 'MOBILE APP', image: '/assets/projects/mobile/cover-kerry-red-station.png', gallery: [] },
+  { id: 'warm-reminder', category: 'mobile', title: '暖行叮嘱系统小程序', en: 'WARM REMINDER', desc: '', meta: 'MINI PROGRAM', image: '/assets/projects/mobile/cover-warm-reminder.png', gallery: [] },
 ]
 
 const filters = [
