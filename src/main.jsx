@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
+import { AnimatePresence, motion } from 'motion/react'
 import Aurora from './components/Aurora'
 import Dock from './components/Dock'
 import BlurText from './components/BlurText'
@@ -10,36 +11,55 @@ import TiltedCard from './components/TiltedCard'
 import GlareHover from './components/GlareHover'
 import CircularGallery from './components/CircularGallery'
 import EvilEye from './components/EvilEye'
+import CardSwap, { Card as SwapCard } from './components/CardSwap'
+import Masonry from './components/Masonry'
 // import ShinyText from './components/ShinyText'
 import './styles.css'
 
 const heroProjects = [
-  { id: 1, category: 'visual', title: '可视化数据大屏', type: 'DATA VISUALIZATION', tone: 'blue', image: '/assets/card-visualization-v2.png' },
-  { id: 2, category: 'pc', title: '后台管理系统', type: 'DEVICE CONSOLE', tone: 'paper', image: '/assets/card-device-console-v2.png' },
-  { id: 3, category: 'mobile', title: '移动端', type: 'MOBILE PRODUCT', tone: 'orange', image: '/assets/card-mobile-v2.png' },
-  { id: 4, category: 'operation', title: '运营设计', type: 'OPERATION DESIGN', tone: 'violet', image: '/assets/card-operation-v2.png' },
-  { id: 5, category: null, title: '其他', type: 'MORE WORKS', tone: 'cyan', image: '/assets/card-other-v2.png' },
+  { id: 1, category: 'visual', title: '可视化数据大屏', type: 'DATA VISUALIZATION', tone: 'blue', image: '/assets/card-visualization-thumb.jpg' },
+  { id: 2, category: 'pc', title: '后台管理系统', type: 'DEVICE CONSOLE', tone: 'paper', image: '/assets/card-device-console-thumb.jpg' },
+  { id: 3, category: 'mobile', title: '移动端', type: 'MOBILE PRODUCT', tone: 'orange', image: '/assets/card-mobile-thumb.jpg' },
+  { id: 4, category: 'operation', title: '运营设计', type: 'OPERATION DESIGN', tone: 'violet', image: '/assets/card-operation-thumb.jpg' },
+  { id: 5, category: null, title: '其他', type: 'MORE WORKS', tone: 'cyan', image: '/assets/card-other-thumb.jpg' },
 ]
 
 const experiences = [
-  { year: '2024.10 — 至今', company: '积成电子股份有限公司', companyEn: 'IESLAB', role: '界面设计工程师', roleFocus: '大屏可视化设计', description: '参与各类电力可视化系统的界面与体验设计。公司长期深耕电力自动化、公用事业自动化及能源信息化领域，为能源电力业务提供数字化产品与解决方案。', tags: ['电力可视化', '数据大屏', '能源数字化'], website: 'https://www.ieslab.com.cn/index.php?c=category&id=8' },
-  { year: '2023.11 — 2024.10', company: '数字鲸鱼（山东）能源科技有限公司', companyEn: 'DIGITAL WHALE ENERGY', role: 'UI 设计师', roleFocus: 'B 端设计', description: '负责电力公司管理后台 PMS 3.0 的 B 端产品界面与体验设计。公司主要面向能源电力行业开展软件开发与信息技术服务。', tags: ['PMS 3.0', 'B 端设计', '电力管理后台'], website: null },
-  { year: '2022.07 — 2023.11', company: '上海飞未信息技术有限公司', companyEn: 'FEIWEI', role: 'UI 设计师 / 产品助理', roleFocus: '数字农业产品', description: '参与农业农村宅基地制度改革相关数字化产品，承担 UI 设计并协助产品梳理。公司深耕数字农业农村领域，业务覆盖咨询设计、产品研发、应用推广及运维服务。', tags: ['数字农业', '宅基地改革', 'UI / 产品'], website: 'https://51jianku.com/html/cms/fw/fwkh.html' },
+  { year: '2024.10 — 至今', company: '积成电子股份有限公司', companyEn: 'IESLAB', role: '界面设计工程师', roleFocus: '大屏可视化设计', description: '参与各类电力可视化系统的界面与体验设计。公司长期深耕电力自动化、公用事业自动化及能源信息化领域，为能源电力业务提供数字化产品与解决方案。', tags: ['电力可视化', '数据大屏', '能源数字化'], details: ['负责电力可视化大屏的界面与体验设计', '梳理调度、配网、集控及仿真业务的信息层级', '建立组件规范并协同研发完成设计验收'], detailSections: [
+    { title: '电力数字化可视化大屏驾驶舱设计', content: '公司业务覆盖集控、调度、配网、新能源，以及源网荷储、电磁暂态仿真等能源数字化方向。我主要负责电力调度、配网运维、电磁暂态仿真三条业务线的可视化大屏设计，并支持其他板块。围绕运维监控与仿真分析场景，完成数据驾驶舱、实时监控面板、电网拓扑图、告警看板及仿真页面；统一深色大屏、分级告警、设备状态和实时数据展示规范，兼顾远距离可读性，适配 27 寸显示器与超宽拼接屏，支撑调度、巡检和仿真分析等一线业务。' },
+    { title: '政企产品对外宣传视觉物料设计', content: '负责数字化电力产品的对外宣传视觉，独立完成企业画册、产品折页、展会展板及项目汇报 PPT。结合产品定位统一视觉风格，优化数据图表、设备示意与业务流程表达，服务投标汇报、展会展示和政企客户推介，提升产品的专业商务形象。' },
+  ], website: 'https://www.ieslab.com.cn/index.php?c=category&id=8' },
+  { year: '2023.11 — 2024.10', company: '数字鲸鱼（山东）能源科技有限公司', companyEn: 'DIGITAL WHALE ENERGY', role: 'UI 设计师', roleFocus: 'B 端设计', description: '参与国网新一代设备资产精益管理系统（PMS3.0）设计。该系统是国家电网为提升设备管理效率和资产利用率开发的综合性管理平台，利用现代信息技术，将设备全生命周期管理与精益管理理念结合，实现设备资产的科学管控和优化配置。', tags: ['PMS 3.0', '视觉规范', '专业子系统'], details: ['与设计团队密切配合，明确分工并参与组内评审', '参与 PMS3.0 后半段视觉规范制定、自动布局规范验证及组件库搭建', '依据规范完成输电、变电、配电、直流四大专业相关子系统页面设计'], detailSections: [
+    { title: '国网新一代设备资产精益管理系统（PMS3.0）｜项目简介', content: '国家电网集团级设备资产管控平台，聚焦设备全生命周期管理与精益化资产运营，覆盖输电、变电、配电、直流四大专业，实现设备统一台账、运维监控与资产优化调配。' },
+    { title: '国网新一代设备资产精益管理系统（PMS3.0）｜工作职责', content: '协同团队拆分模块并组织设计评审，主导视觉规范、自动布局规则校验及通用组件库搭建，为四大专业子系统建立统一设计底座。依据规范独立完成输电、变电、配电、直流后台页面设计，覆盖设备台账、运维统计、资产监控和业务表单，保证全平台视觉、交互与布局一致。' },
+    { title: '可视化大屏 + 平面宣传物料设计', content: '独立完成政企数字化驾驶舱界面，以及项目汇报 PPT、宣传画册、线下展板和宣传短片等物料，支持电网、农业、政务项目的投标汇报与线下展示。' },
+  ], website: null },
+  { year: '2022.07 — 2023.11', company: '上海飞未信息技术有限公司', companyEn: 'FEIWEI', role: 'UI 设计师 / 产品助理', roleFocus: '数字农业产品', description: '参与农业农村宅基地制度改革相关数字化产品，承担 UI 设计并协助产品梳理。公司深耕数字农业农村领域，业务覆盖咨询设计、产品研发、应用推广及运维服务。', tags: ['数字农业', '宅基地改革', 'UI / 产品'], details: ['参与宅基地制度改革类数字化产品设计', '承担 Web 与移动端界面设计及产品原型整理', '配合需求调研、方案梳理与项目交付验收'], detailSections: [
+    { title: '农业农村数字化可视化设计', content: '负责农业农村智慧管控大屏，独立完成多套主题驾驶舱；同时承担宅基地改革平台全视觉设计，覆盖 PC 管理后台与移动作业 App，支持一线人员上报进度并监控整改全流程。' },
+    { title: '品牌平面宣传物料全链路设计', content: '独立完成宣传画册、折页、线下展板、汇报 PPT 及项目宣传视频，服务政企客户汇报、展会展示与项目申报。' },
+    { title: '政务数字化 0-1 项目统筹（嘉兴总工会・嘉里红驿）', content: '担任项目总负责人，统筹管理后台、移动 App、可视化大屏三端设计。对外完成客户需求调研与原型输出；对内建立统一视觉规范，协调设计团队落地三端界面，并把控视觉、交互与交付质量。' },
+    { title: '项目成果', content: '项目完整交付并回款，移动 App 上架「浙里办」正式商用；获得浙江省工会数字化大比武省级二等奖，将线下活动迁移至线上，降低运营成本、提升服务效率，并建立工会官方线上服务窗口，优化政务品牌形象。' },
+  ], website: 'https://51jianku.com/html/cms/fw/fwkh.html' },
 ]
+
+const buildProjectGallery = (basePath, files, label = '项目界面') => files.map((file, index) => ({
+  src: `${basePath}/${file}`,
+  label: `${label} ${String(index + 2).padStart(2, '0')}`,
+}))
 
 const projects = [
   // Previous concept covers are retained in each project folder as cover-generated.png.
-  { id: 'city', category: 'visual', no: '01', title: '山东电力交易中心可视化大屏', type: '调度', en: 'SHANDONG POWER TRADING CENTER', desc: '面向电力交易调度场景，集中呈现市场运行、交易计划与关键指标。', meta: 'DATA VISUALIZATION', image: '/assets/projects/city/cover-photo-v2.png', gallery: [{src:'/assets/projects/city/overview.jpg',label:'电力市场概况'},{src:'/assets/projects/city/intra-province.png',label:'省内市场'},{src:'/assets/projects/city/inter-province.png',label:'省间市场'}] },
-  { id: 'energy', category: 'visual', no: '02', title: '潍坊调度中心驾驶舱', type: '调度', en: 'WEIFANG DISPATCH COCKPIT', desc: '整合电网运行态势、调度任务与异常告警的综合驾驶舱。', meta: 'DISPATCH CENTER', image: '/assets/projects/energy/cover-photo-v2.png', gallery: [{src:'/assets/projects/energy/device-monitor.png',label:'设备监控'},{src:'/assets/projects/energy/satellite.png',label:'卫星云图'},{src:'/assets/projects/energy/collaboration.png',label:'主配协同'},{src:'/assets/projects/energy/power-flow.png',label:'潮流图'}] },
+  { id: 'city', category: 'visual', no: '01', title: '山东电力交易中心可视化大屏', type: '调度', en: 'SHANDONG POWER TRADING CENTER', desc: '面向电力交易调度场景，集中呈现市场运行、交易计划与关键指标。', meta: 'DATA VISUALIZATION', image: '/assets/projects/city/cover-thumb.webp', detailImage: '/assets/projects/city/cover-photo-v2.png', gallery: [{src:'/assets/projects/city/overview.jpg',label:'电力市场概况'},{src:'/assets/projects/city/intra-province.png',label:'省内市场'},{src:'/assets/projects/city/inter-province.png',label:'省间市场'}] },
+  { id: 'energy', category: 'visual', no: '02', title: '潍坊调度中心驾驶舱', type: '调度', en: 'WEIFANG DISPATCH COCKPIT', desc: '整合电网运行态势、调度任务与异常告警的综合驾驶舱。', meta: 'DISPATCH CENTER', image: '/assets/projects/energy/cover-thumb.webp', detailImage: '/assets/projects/energy/cover-photo-v2.png', gallery: [{src:'/assets/projects/energy/device-monitor.png',label:'设备监控'},{src:'/assets/projects/energy/satellite.png',label:'卫星云图'},{src:'/assets/projects/energy/collaboration.png',label:'主配协同'},{src:'/assets/projects/energy/power-flow.png',label:'潮流图'}] },
   { id: 'factory', category: 'pc', no: '03', title: '工业数字孪生平台', en: 'INDUSTRIAL DIGITAL TWIN', desc: '连接设备、生产与业务的企业级桌面工作台。', meta: 'PC / WEB · 2024', image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1800&q=90' },
   { id: 'travel', category: 'mobile', no: '04', title: '城市出行服务', en: 'URBAN MOBILITY APP', desc: '为高频通勤场景设计的一站式移动出行体验。', meta: 'MOBILE APP · 2023', image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1800&q=90' },
   { id: 'ai', category: 'ai', no: '05', title: 'AI 数据洞察助手', en: 'AI INSIGHT COPILOT', desc: '将自然语言与数据查询、归因分析连接起来。', meta: 'AI PRODUCT · 2025', image: 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1800&q=90' },
   { id: 'console', category: 'operation', no: '06', title: '企业运营工作台', en: 'BUSINESS CONSOLE', desc: '复杂业务流程下的信息架构与效率体验重构。', meta: 'OPERATION DESIGN · 2023', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1800&q=90' },
   { id: 'health', category: 'mobile', no: '07', title: '轻量健康记录', en: 'DAILY HEALTH', desc: '关注日常节奏与情绪反馈的轻量移动产品。', meta: 'MOBILE APP · 2022', image: 'https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=1800&q=90' },
-  { id: 'grid-command', category: 'visual', no: '03', title: '甘肃一体化值班平台', type: '调度', en: 'GANSU INTEGRATED DUTY PLATFORM', desc: '围绕值班监控、事件处置和协同调度构建一体化可视体验。', meta: 'INTEGRATED DUTY', image: '/assets/projects/grid-command/cover-photo-v2.png', gallery: [{src:'/assets/projects/grid-command/platform.png',label:'一体化值班平台'}] },
-  { id: 'carbon-map', category: 'visual', no: '04', title: 'OCS2.0 新一代电网运行监视系统', type: '配网', en: 'OCS 2.0 GRID MONITORING', desc: '服务配网运行监视、风险识别与异常处置的新一代监控系统。', meta: 'DISTRIBUTION GRID', image: '/assets/projects/carbon-map/cover-photo-v2.png', gallery: [{src:'/assets/projects/carbon-map/home.png',label:'系统首页'},{src:'/assets/projects/carbon-map/self-healing.png',label:'自愈服务概览'},{src:'/assets/projects/carbon-map/protection.png',label:'保护定值服务概览'}] },
-  { id: 'factory-screen', category: 'visual', no: '05', title: '国网南昌供电公司变电站集中监控系统', type: '集控', en: 'NANCHANG SUBSTATION CONTROL', desc: '集中呈现变电站运行状态、设备告警与监控处置流程。', meta: 'CENTRALIZED CONTROL', image: '/assets/projects/factory-screen/cover-photo-v2.png', gallery: [{src:'/assets/projects/factory-screen/control.png',label:'变电站集中监控'}] },
-  { id: 'emergency-screen', category: 'visual', no: '06', title: '电磁暂态仿真系统', type: '仿真产品', en: 'ELECTROMAGNETIC TRANSIENT SIMULATION', desc: '面向电力系统电磁暂态计算、结果分析与仿真任务管理。', meta: 'SIMULATION', image: '/assets/projects/emergency-screen/cover-photo-v2.png', gallery: [{src:'/assets/projects/emergency-screen/simulation.png',label:'电磁暂态仿真'}] },
+  { id: 'grid-command', category: 'visual', no: '03', title: '甘肃一体化值班平台', type: '调度', en: 'GANSU INTEGRATED DUTY PLATFORM', desc: '围绕值班监控、事件处置和协同调度构建一体化可视体验。', meta: 'INTEGRATED DUTY', image: '/assets/projects/grid-command/cover-thumb.webp', detailImage: '/assets/projects/grid-command/cover-photo-v2.png', gallery: [{src:'/assets/projects/grid-command/platform.png',label:'一体化值班平台'}] },
+  { id: 'carbon-map', category: 'visual', no: '04', title: 'OCS2.0 新一代电网运行监视系统', type: '配网', en: 'OCS 2.0 GRID MONITORING', desc: '服务配网运行监视、风险识别与异常处置的新一代监控系统。', meta: 'DISTRIBUTION GRID', image: '/assets/projects/carbon-map/cover-thumb.webp', detailImage: '/assets/projects/carbon-map/cover-photo-v2.png', gallery: [{src:'/assets/projects/carbon-map/home.png',label:'系统首页'},{src:'/assets/projects/carbon-map/self-healing.png',label:'自愈服务概览'},{src:'/assets/projects/carbon-map/protection.png',label:'保护定值服务概览'}] },
+  { id: 'factory-screen', category: 'visual', no: '05', title: '国网南昌供电公司变电站集中监控系统', type: '集控', en: 'NANCHANG SUBSTATION CONTROL', desc: '集中呈现变电站运行状态、设备告警与监控处置流程。', meta: 'CENTRALIZED CONTROL', image: '/assets/projects/factory-screen/cover-thumb.webp', detailImage: '/assets/projects/factory-screen/cover-photo-v2.png', gallery: [{src:'/assets/projects/factory-screen/control.png',label:'变电站集中监控'}] },
+  { id: 'emergency-screen', category: 'visual', no: '06', title: '电磁暂态仿真系统', type: '仿真产品', en: 'ELECTROMAGNETIC TRANSIENT SIMULATION', desc: '面向电力系统电磁暂态计算、结果分析与仿真任务管理。', meta: 'SIMULATION', image: '/assets/projects/emergency-screen/cover-thumb.webp', detailImage: '/assets/projects/emergency-screen/cover-photo-v2.png', gallery: [{src:'/assets/projects/emergency-screen/simulation.png',label:'电磁暂态仿真'}] },
   { id: 'pms-console', category: 'pc', title: 'PMS 3.0 管理后台', en: 'POWER MANAGEMENT SYSTEM', desc: '面向电力设备台账、巡检与工单管理的企业级后台。', meta: 'PC / WEB · 2024', image: '/assets/card-device-console-v2.png' },
   { id: 'asset-console', category: 'pc', title: '设备资产管理系统', en: 'ASSET MANAGEMENT', desc: '连接资产全生命周期、状态监测与维保计划。', meta: 'PC / WEB · 2024', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1800&q=90' },
   { id: 'agri-console', category: 'pc', title: '数字农业工作台', en: 'DIGITAL AGRICULTURE', desc: '服务宅基地改革与农业农村业务的综合管理平台。', meta: 'PC / WEB · 2023', image: 'https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=1800&q=90' },
@@ -54,13 +74,59 @@ const projects = [
   { id: 'social-content', category: 'operation', title: '社交内容设计', en: 'SOCIAL CONTENT', desc: '建立可持续复用的社交媒体内容视觉语言。', meta: 'OPERATION DESIGN · 2024', image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=1800&q=90' },
   { id: 'launch', category: 'operation', title: '产品发布传播', en: 'PRODUCT LAUNCH', desc: '围绕产品价值构建发布节奏与核心传播画面。', meta: 'OPERATION DESIGN · 2023', image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1800&q=90' },
   { id: 'brand-kit', category: 'operation', title: '品牌运营素材库', en: 'BRAND ASSET KIT', desc: '沉淀品牌组件与高频运营物料的统一规范。', meta: 'OPERATION DESIGN · 2023', image: '/assets/card-other-v2.png' },
-  { id: 'pms-30', category: 'pc', title: 'PMS 3.0', en: 'POWER MANAGEMENT SYSTEM', desc: '', meta: 'B-END / WEB', image: '/assets/projects/generated/pms-30-cover.png', gallery: [] },
-  { id: 'soil-survey', category: 'pc', title: '第三次全国土壤普查管理平台', en: 'NATIONAL SOIL SURVEY', desc: '', meta: 'B-END / WEB', image: '/assets/projects/generated/soil-survey-cover.png', gallery: [] },
-  { id: 'homestead-standard', category: 'pc', title: '宅基地基准版 2.0', en: 'HOMESTEAD STANDARD 2.0', desc: '', meta: 'B-END / WEB', image: '/assets/projects/generated/homestead-standard-cover.png', gallery: [] },
-  { id: 'lanling-web', category: 'pc', title: '兰陵县农村宅基地管理信息系统', en: 'LANLING HOMESTEAD SYSTEM', desc: '', meta: 'B-END / WEB', image: '/assets/projects/generated/lanling-web-cover.png', gallery: [] },
-  { id: 'lover-bay', category: 'mobile', title: '恋人湾', en: 'LOVER BAY', desc: '', meta: 'MOBILE APP', image: '/assets/projects/generated/lover-bay-cover.png', gallery: [] },
-  { id: 'homestead-assistant', category: 'mobile', title: '宅基地监管助手', en: 'HOMESTEAD ASSISTANT', desc: '', meta: 'MOBILE APP', image: '/assets/projects/generated/homestead-assistant-cover.png', gallery: [] },
-  { id: 'kerry-red-station', category: 'mobile', title: '嘉里红驿', en: 'KERRY RED STATION', desc: '', meta: 'MOBILE APP', image: '/assets/projects/generated/kerry-red-station-cover.png', gallery: [] },
+  { id: 'pms-30', category: 'pc', no: '01', title: 'PMS 3.0', type: 'B 端系统', en: 'POWER MANAGEMENT SYSTEM', desc: '以统一的 Web 视觉规范支撑电力设备状态评估、停电分析与业务协同。', meta: 'B-END / WEB', image: '/assets/projects/pms-30/cover-thumb.webp', detailImage: '/assets/projects/pms-30/cover-generated-v2.png', document: '/assets/projects/pms-30/pms30-web-guideline.pdf', gallery: [
+    { src: '/assets/projects/pms-30/overview.png', label: '二次状态评估 · 首页总览' },
+    { src: '/assets/projects/pms-30/detail.png', label: '二次状态评估 · 首页详情' },
+    { src: '/assets/projects/pms-30/evaluation.png', label: '装置本体状态评价' },
+    { src: '/assets/projects/pms-30/outage-mainline.png', label: '六级停电信息池' },
+  ] },
+  { id: 'soil-survey', category: 'pc', no: '02', title: '第三次全国土壤普查管理平台', type: '农业 B 端', en: 'NATIONAL SOIL SURVEY', desc: '围绕样点、样品、检测与成果报表建立清晰、可靠的土壤普查业务工作台。', meta: 'B-END / WEB', image: '/assets/projects/soil-survey/cover-thumb.webp', detailImage: '/assets/projects/soil-survey/login.png', gallery: [
+    { src: '/assets/projects/soil-survey/batch-list.png', label: '样品分析 · 批次列表' },
+    { src: '/assets/projects/soil-survey/sample-report.png', label: '样品报表展示' },
+    { src: '/assets/projects/soil-survey/site-condition.png', label: '立地条件' },
+    { src: '/assets/projects/soil-survey/soil-bag.png', label: '采土袋管理' },
+    { src: '/assets/projects/soil-survey/point-report.png', label: '样点报表展示' },
+    { src: '/assets/projects/soil-survey/sampling-photo.png', label: '采样拍摄' },
+  ] },
+  {
+    id: 'kerry-red-station',
+    category: 'mobile',
+    no: '01',
+    title: '嘉里红驿',
+    type: '移动端',
+    en: 'KERRY RED STATION',
+    desc: '围绕工会服务、红色驿站与职工活动构建的数字化服务体验。',
+    meta: 'MOBILE APP',
+    image: '/assets/projects/mobile/kerry-red-station/cover-thumb.webp',
+    detailImage: '/assets/projects/mobile/kerry-red-station/01.png',
+    gallery: buildProjectGallery('/assets/projects/mobile/kerry-red-station', ['02.png', '03.png', '04.png', '05.png', '06.png', '07.png', '08.png', '09.png', '10.png', '11.png', '12.png', '13.png', '14.png', '15.png'], '设计展示'),
+  },
+  {
+    id: 'lover-bay',
+    category: 'mobile',
+    no: '02',
+    title: '恋人湾',
+    type: '移动端',
+    en: 'LOVER BAY',
+    desc: '面向校园恋爱与纪念场景的年轻化社交产品体验设计。',
+    meta: 'MOBILE APP',
+    image: '/assets/projects/mobile/lover-bay/cover-thumb.webp',
+    detailImage: '/assets/projects/mobile/lover-bay/01.png',
+    gallery: buildProjectGallery('/assets/projects/mobile/lover-bay', ['02.png', '03.png', '04.png', '05.png', '06.png', '07.png', '08.png', '09.png', '10.png', '11.png', '12.jpg'], '设计展示'),
+  },
+  {
+    id: 'homestead-assistant',
+    category: 'mobile',
+    no: '03',
+    title: '宅基地监管助手',
+    type: '移动端',
+    en: 'HOMESTEAD ASSISTANT',
+    desc: '面向巡查任务、问题整改与现场签到的基层移动监管工具。',
+    meta: 'MOBILE APP',
+    image: '/assets/projects/mobile/homestead-assistant/cover-thumb.webp',
+    detailImage: '/assets/projects/mobile/homestead-assistant/cover-generated-v2.png',
+    gallery: buildProjectGallery('/assets/projects/mobile/homestead-assistant', ['02.png', '03.png', '04.png', '05.png', '06.png', '07.png', '08.png', '09.png', '10.png', '11.png', '12.png'], '项目界面'),
+  },
   { id: 'warm-reminder', category: 'mobile', title: '暖行叮嘱系统小程序', en: 'WARM REMINDER', desc: '', meta: 'MINI PROGRAM', image: '/assets/projects/generated/warm-reminder-cover.png', gallery: [] },
 ]
 
@@ -77,24 +143,20 @@ const visualGroups = [
 ]
 
 const ruralGalleryCovers = [
-  { text: '全国农村宅基地一张图', en: 'NATIONAL HOMESTEAD MAP', image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=88' },
-  { text: '云南高原特色现代农业产业大脑', en: 'YUNNAN AGRICULTURE BRAIN', image: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=88' },
-  { text: '易管田数据大屏', en: 'FARMLAND DATA SCREEN', image: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=1200&q=88' },
-  { text: '兰陵县宅基地管理系统', en: 'LANLING HOMESTEAD', image: 'https://images.unsplash.com/photo-1499529112087-3cb3b73cec95?auto=format&fit=crop&w=1200&q=88' },
-  { text: '山西省谷子产业集群驾驶舱', en: 'MILLET INDUSTRY COCKPIT', image: 'https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?auto=format&fit=crop&w=1200&q=88' },
-  { text: '蒙山数据大屏', en: 'MENGSHAN DATA SCREEN', image: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=88' },
-  { text: '数字乡村一张图', en: 'DIGITAL VILLAGE MAP', image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=1200&q=88' },
-  { text: '乱占耕地建房整治调度平台', en: 'FARMLAND GOVERNANCE', image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=1200&q=88' },
-  { text: '数字农田驾驶舱', en: 'DIGITAL FARMLAND', image: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=88' },
+  { text: '全国农村宅基地一张图', en: 'NATIONAL HOMESTEAD MAP', image: '/assets/projects/rural/covers/01.jpg' },
+  { text: '云南高原特色现代农业产业大脑', en: 'YUNNAN AGRICULTURE BRAIN', image: '/assets/projects/rural/covers/02.jpg' },
+  { text: '兰陵县宅基地管理系统', en: 'LANLING HOMESTEAD', image: '/assets/projects/rural/covers/03.jpg' },
+  { text: '山西省谷子产业集群驾驶舱', en: 'MILLET INDUSTRY COCKPIT', image: '/assets/projects/rural/covers/04.jpg' },
+  { text: '数字乡村一张图', en: 'DIGITAL VILLAGE MAP', image: '/assets/projects/rural/covers/05.jpg' },
+  { text: '乱占耕地建房整治调度平台', en: 'FARMLAND GOVERNANCE', image: '/assets/projects/rural/covers/06.jpg' },
+  { text: '数字农田驾驶舱', en: 'DIGITAL FARMLAND', image: '/assets/projects/rural/covers/07.jpg' },
 ]
 
 const ruralProjectScreens = [
   ['/assets/projects/rural/01/screen-1.png', '/assets/projects/rural/01/screen-2.png'],
   ['/assets/projects/rural/02/screen-1.png', '/assets/projects/rural/02/screen-2.png'],
-  ['/assets/projects/rural/03/screen-1.png', '/assets/projects/rural/03/screen-2.png', '/assets/projects/rural/03/screen-3.png'],
   ['/assets/projects/rural/04/screen-1.png', '/assets/projects/rural/04/screen-2.png'],
   ['/assets/projects/rural/05/screen-1.png'],
-  ['/assets/projects/rural/06/screen-1.png', '/assets/projects/rural/06/screen-2.png'],
   ['/assets/projects/rural/07/screen-1.png', '/assets/projects/rural/07/screen-2.png', '/assets/projects/rural/07/screen-3.png'],
   ['/assets/projects/rural/08/screen-1.png', '/assets/projects/rural/08/screen-2.png', '/assets/projects/rural/08/screen-3.png', '/assets/projects/rural/08/screen-4.png', '/assets/projects/rural/08/screen-5.png'],
   ['/assets/projects/rural/09/screen-1.png', '/assets/projects/rural/09/screen-2.png', '/assets/projects/rural/09/screen-3.png'],
@@ -117,10 +179,78 @@ const ruralGalleryItems = ruralGalleryCovers.map((item, index) => ({
 
 const powerProjectIds = new Set(['city', 'energy', 'grid-command', 'carbon-map', 'factory-screen', 'emergency-screen'])
 const categoryProjectIds = {
-  pc: new Set(['pms-30', 'soil-survey', 'homestead-standard', 'lanling-web']),
-  mobile: new Set(['lover-bay', 'homestead-assistant', 'kerry-red-station', 'warm-reminder']),
+  pc: new Set(['pms-30', 'soil-survey']),
+  mobile: new Set(['kerry-red-station', 'lover-bay', 'homestead-assistant']),
   operation: new Set(),
 }
+
+const operationGroups = [
+  { id: 'graphic', label: '平面类', en: 'GRAPHIC' },
+  { id: 'campaign', label: '运营设计类', en: 'CAMPAIGN' },
+]
+
+const operationProjects = {
+  graphic: [
+    {
+      id: 'graphic-brochure', category: 'operation', no: '01', title: '宅基地宣传三折页', type: '折页设计', en: 'HOMESTEAD BROCHURE',
+      desc: '围绕宅基地政策传播梳理内容层级，以折页结构承载高密度信息。',
+      meta: 'GRAPHIC / BROCHURE', image: '/assets/projects/operation/graphic/brochure/01.jpg',
+      gallery: [{ src: '/assets/projects/operation/graphic/brochure/02.jpg', label: '三折页背面' }],
+    },
+    {
+      id: 'graphic-dingyuan', category: 'operation', no: '02', title: '定远县宅基地试点工作手册', type: '手册设计', en: 'DINGYUAN HOMESTEAD MANUAL',
+      desc: '将两项试点工作内容转译为结构清晰、便于汇报与阅读的完整手册。',
+      meta: 'GRAPHIC / MANUAL', image: '/assets/projects/operation/graphic/dingyuan/01.jpg',
+      gallery: Array.from({ length: 19 }, (_, index) => ({ src: `/assets/projects/operation/graphic/dingyuan/${String(index + 2).padStart(2, '0')}.jpg`, label: `手册内页 ${String(index + 2).padStart(2, '0')}` })),
+    },
+    {
+      id: 'graphic-dispatch', category: 'operation', no: '03', title: '调度系统视觉方案', type: '方案设计', en: 'DISPATCH SYSTEM PROPOSAL',
+      desc: '面向调度系统方案汇报，建立统一的视觉叙事与页面节奏。',
+      meta: 'GRAPHIC / PROPOSAL', image: '/assets/projects/operation/graphic/dispatch/01.jpg',
+      gallery: Array.from({ length: 3 }, (_, index) => ({ src: `/assets/projects/operation/graphic/dispatch/${String(index + 2).padStart(2, '0')}.jpg`, label: `方案页面 ${String(index + 2).padStart(2, '0')}` })),
+    },
+    {
+      id: 'graphic-nanqiao', category: 'operation', no: '04', title: '南谯区乡村振兴产业融合示范区', type: '规划视觉', en: 'NANQIAO RURAL REVITALIZATION',
+      desc: '以区域规划、产业分区与空间关系为核心的信息视觉表达。',
+      meta: 'GRAPHIC / PLANNING', image: '/assets/projects/operation/graphic/nanqiao/01.png',
+      gallery: Array.from({ length: 5 }, (_, index) => ({ src: `/assets/projects/operation/graphic/nanqiao/${String(index + 2).padStart(2, '0')}.png`, label: `规划设计 ${String(index + 2).padStart(2, '0')}` })),
+    },
+  ],
+  campaign: [
+    { id: 'campaign-launch', category: 'operation', no: '01', title: '产品启动页', type: '启动视觉', en: 'APP LAUNCH VISUAL', desc: '面向产品启动场景的品牌氛围与视觉记忆设计。', meta: 'CAMPAIGN / APP', image: '/assets/projects/operation/campaign/thumb-01.webp', gallery: [] },
+    { id: 'campaign-mid-autumn', category: 'operation', no: '02', title: '中秋佳节', type: '节日运营', en: 'MID-AUTUMN FESTIVAL', desc: '以节日意象构建温暖、克制的品牌运营画面。', meta: 'CAMPAIGN / FESTIVAL', image: '/assets/projects/operation/campaign/thumb-02.webp', gallery: [] },
+    { id: 'campaign-winter', category: 'operation', no: '03', title: '冬至', type: '节日运营', en: 'WINTER SOLSTICE', desc: '结合冬至节气氛围完成节日主题传播设计。', meta: 'CAMPAIGN / FESTIVAL', image: '/assets/projects/operation/campaign/thumb-03.webp', gallery: [] },
+    { id: 'campaign-art', category: 'operation', no: '04', title: '国际艺术展', type: '展架设计', en: 'INTERNATIONAL ART EXHIBITION', desc: '服务线下展览场景的高识别度主题展架设计。', meta: 'CAMPAIGN / EXHIBITION', image: '/assets/projects/operation/campaign/thumb-04.webp', gallery: [] },
+    { id: 'campaign-travel', category: 'operation', no: '05', title: '旅游去哪', type: '活动运营', en: 'TRAVEL CAMPAIGN', desc: '面向旅游活动传播的轻量化运营视觉设计。', meta: 'CAMPAIGN / TRAVEL', image: '/assets/projects/operation/campaign/thumb-05.webp', gallery: [] },
+    { id: 'campaign-dragonboat', category: 'operation', no: '06', title: '端午节海报', type: '节日海报', en: 'DRAGON BOAT FESTIVAL', desc: '以传统节日文化为核心的视觉海报创作。', meta: 'CAMPAIGN / POSTER', image: '/assets/projects/operation/campaign/thumb-06.webp', gallery: [] },
+  ],
+}
+
+const imagePreloadCache = new Map()
+const preloadImage = src => {
+  if (!src || imagePreloadCache.has(src)) return imagePreloadCache.get(src)
+  const image = new Image()
+  image.decoding = 'async'
+  image.fetchPriority = 'low'
+  image.src = src
+  image.decode?.().catch(() => {})
+  imagePreloadCache.set(src, image)
+  return image
+}
+
+const warmProjectAssets = project => {
+  if (!project) return
+  ;[project.detailImage || project.image, ...(project.gallery || []).slice(0, 2).map(item => item.src)].forEach(preloadImage)
+}
+
+const portfolioCoverSources = [
+  ...heroProjects.map(project => project.image),
+  ...projects
+    .filter(project => powerProjectIds.has(project.id) || Object.values(categoryProjectIds).some(ids => ids.has(project.id)))
+    .map(project => project.image),
+  ...Object.values(operationProjects).flat().map(project => project.image),
+  ...ruralGalleryCovers.map(project => project.image),
+]
 
 function Loader({ onReveal, onDone }) {
   const [progress, setProgress] = useState(0)
@@ -196,7 +326,7 @@ function Hero({ onCategorySelect, ready }) {
         <Dock distance={330} magnification={1.045}>
           {heroProjects.map(project => <div key={project.id} className="hero-card-shell">
             <button className="hero-project-v1" onClick={project.category ? () => onCategorySelect(project.category) : undefined} aria-label={project.category ? `查看${project.title}` : `${project.title}，内容预留`}>
-              <img src={project.image} alt="" />
+              <img src={project.image} alt="" decoding="async" />
             </button>
             <span className="hero-project-label"><i>{String(project.id).padStart(2,'0')}</i><b>{project.title}</b></span>
           </div>)}
@@ -259,6 +389,7 @@ function About() {
 
 function Experience() {
   const [activeExperience, setActiveExperience] = useState(0)
+  const [expandedExperience, setExpandedExperience] = useState(null)
   const jumpToExperience = index => { setActiveExperience(index); document.getElementById(`experience-item-${index}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }) }
   return <section id="experience" className="experience experience--redesign section">
     <div className="shell">
@@ -270,15 +401,31 @@ function Experience() {
           <div className="timeline__year"><span>0{index + 1}</span><b>{item.year.split(' — ').map((part, partIndex) => <React.Fragment key={part}>{partIndex > 0 && <i>—</i>}<em>{part}</em></React.Fragment>)}</b></div>
           <div className="timeline__dot" />
           <div className="timeline__body">
-            <span>{item.company} / {item.companyEn}</span>
+            {item.website
+              ? <a className="timeline__website timeline__website--top" href={item.website} target="_blank" rel="noreferrer"><span>公司官网</span><b>↗</b></a>
+              : <span className="timeline__website timeline__website--top timeline__website--muted"><span>暂无公开官网</span></span>}
+            <span className="timeline__company">{item.company} / {item.companyEn}</span>
             <h3><span>{item.role}</span><em>{item.roleFocus}</em></h3>
             <p>{item.description}</p>
             <div className="timeline__meta">
               <div className="timeline__tags">{item.tags.map(tag => <i key={tag}>{tag}</i>)}</div>
-              {item.website
-                ? <a className="timeline__website" href={item.website} target="_blank" rel="noreferrer">公司官网 <b>↗</b></a>
-                : <span className="timeline__website timeline__website--muted">暂无公开官网</span>}
+              <div className="timeline__links">
+                <button className={`timeline__detail-trigger${expandedExperience === index ? ' is-open' : ''}`} type="button" aria-expanded={expandedExperience === index} onClick={() => setExpandedExperience(expandedExperience === index ? null : index)}>
+                  <span>{expandedExperience === index ? '收起详情' : '工作详情'}</span>
+                  <b aria-hidden="true"><svg viewBox="0 0 16 16"><path d="m4 6 4 4 4-4" /></svg></b>
+                </button>
+              </div>
             </div>
+            <AnimatePresence initial={false}>
+              {expandedExperience === index && <motion.div className="timeline__detail" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: .42, ease: [.22, 1, .36, 1] }}>
+                <div className="timeline__detail-inner">
+                  <header><span>CORE RESPONSIBILITIES</span><b>我具体做了什么</b></header>
+                  {item.detailSections
+                    ? <div className="timeline__detail-copy">{item.detailSections.map((section, sectionIndex) => <section key={section.title}><h4><span>{String(sectionIndex + 1).padStart(2, '0')}</span>{section.title}</h4><p>{section.content}</p></section>)}</div>
+                    : <ol>{item.details.map((detail, detailIndex) => <li key={detail}><span>{String(detailIndex + 1).padStart(2, '0')}</span><p>{detail}</p></li>)}</ol>}
+                </div>
+              </motion.div>}
+            </AnimatePresence>
           </div>
         </article>)}
         </div>
@@ -290,13 +437,16 @@ function Experience() {
 function Works({ onOpen, requestedFilter }) {
   const [filter, setFilter] = useState('visual')
   const [visualGroup, setVisualGroup] = useState('power')
+  const [operationGroup, setOperationGroup] = useState('graphic')
   const [active, setActive] = useState(0)
+  const [mobileActive, setMobileActive] = useState(0)
   const visible = useMemo(() => {
+    if (filter === 'operation') return operationProjects[operationGroup]
     const categoryProjects = projects.filter(project => project.category === filter)
     if (filter !== 'visual') return categoryProjects.filter(project => categoryProjectIds[filter]?.has(project.id)).slice(0, 6)
     return categoryProjects.filter(project => visualGroup === 'power' ? powerProjectIds.has(project.id) : !powerProjectIds.has(project.id)).slice(0, 6)
-  }, [filter, visualGroup])
-  useEffect(() => setActive(0), [filter, visualGroup])
+  }, [filter, visualGroup, operationGroup])
+  useEffect(() => { setActive(0); setMobileActive(0) }, [filter, visualGroup, operationGroup])
   useEffect(() => {
     if (!requestedFilter) return
     setFilter(requestedFilter)
@@ -305,26 +455,50 @@ function Works({ onOpen, requestedFilter }) {
   const select = index => setActive(index)
   return <section id="works" className="works section shell">
     <div className="works__intro">
-      <SectionTitle no="03" label="作品展示" en="SELECTED WORKS">不同屏幕，同一件事：<br /><em>让体验自然发生。</em></SectionTitle>
+      <SectionTitle no="03" label="作品展示" en="SELECTED WORKS"><span>不同屏幕，同一件事：</span><em>让体验自然发生。</em></SectionTitle>
       <div className="works__toolbar">
         <span className="works__count"><i>PROJECT INDEX</i><b>{String(visible.length ? active + 1 : 0).padStart(2, '0')} / {String(visible.length).padStart(2, '0')}</b></span>
         <PillNav items={filters} activeId={filter} onSelect={setFilter} />
       </div>
     </div>
     {filter === 'visual' && <div className="works__subtabs"><PillNav items={visualGroups} activeId={visualGroup} onSelect={setVisualGroup} className="pill-filter-nav--sub" ariaLabel="可视化作品领域" /></div>}
-    <div className="works__stage" key={`${filter}-${visualGroup}`}>
-    {visible.length ? <div className="works-fan" role="list" aria-label={`${filters.find(item => item.id === filter)?.label || ''}作品折叠画廊`} onMouseLeave={() => setActive(0)}>
+    {filter === 'operation' && <div className="works__subtabs works__subtabs--operation"><PillNav items={operationGroups} activeId={operationGroup} onSelect={setOperationGroup} className="pill-filter-nav--sub" ariaLabel="运营设计作品类型" /></div>}
+    <AnimatePresence mode="wait" initial={false}>
+    <motion.div className="works__stage" key={`${filter}-${visualGroup}-${operationGroup}`}
+      initial={{ opacity: 0, y: 18, filter: 'blur(5px)' }}
+      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      exit={{ opacity: 0, y: -12, filter: 'blur(3px)' }}
+      transition={{ duration: .4, ease: [0.2, 0.76, 0.22, 1] }}>
+    {filter === 'operation' && visible.length ? <OperationGallery projects={visible} onOpen={onOpen} />
+      : filter === 'mobile' && visible.length ? <div className="mobile-swap">
+      <div className="mobile-swap__copy">
+        <span>MOBILE EXPERIENCE / 03</span>
+        <h3><span>三种场景，</span><em>一套清晰体验。</em></h3>
+        <p>从职工服务、年轻社交到基层监管，以真实项目素材呈现移动端产品的设计经验。</p>
+        <div className="mobile-swap__markers" style={{ '--mobile-active': mobileActive }}>{visible.map((project, index) => <i className={mobileActive === index ? 'is-active' : ''} key={project.id}>{String(index + 1).padStart(2, '0')}</i>)}</div>
+      </div>
+      <div className="mobile-swap__deck">
+        <CardSwap width="min(580px, 42vw)" height="395px" cardDistance={34} verticalDistance={28} delay={5600} skewAmount={1.2} onActiveChange={setMobileActive} onCardClick={index => onOpen(visible[index])}>
+          {visible.map((project, index) => <SwapCard key={project.id} data-project={project.id} tabIndex={0} aria-label={`查看${project.title}`} onMouseEnter={() => warmProjectAssets(project)} onFocus={() => warmProjectAssets(project)}>
+            <img src={project.image} alt="" decoding="async" />
+            <div className="mobile-swap__shade" />
+            <header><b>{String(index + 1).padStart(2, '0')}</b><span>{project.meta}</span></header>
+            <div className="mobile-swap__card-copy"><small>{project.en}</small><h4>{project.title}</h4><p>{project.desc}</p><span>VIEW PROJECT</span></div>
+          </SwapCard>)}
+        </CardSwap>
+      </div>
+    </div> : visible.length ? <div className="works-fan" role="list" aria-label={`${filters.find(item => item.id === filter)?.label || ''}作品折叠画廊`} onMouseLeave={() => setActive(0)}>
       {visible.map((project, index) => <article
         className={`works-fan__card${active === index ? ' is-active' : ''}${project.category === filter ? ' is-category' : ''}`}
         key={project.id}
         data-category={project.category}
         style={{ '--card-order': index }}
         role="listitem"
-        onMouseEnter={() => select(index)}
-        onFocus={() => select(index)}
+        onMouseEnter={() => { select(index); warmProjectAssets(project) }}
+        onFocus={() => { select(index); warmProjectAssets(project) }}
         tabIndex={0}
       >
-        <img src={project.image} alt="" />
+        <img src={project.image} alt="" loading="lazy" decoding="async" />
         <div className="works-fan__shade" />
         <header><span className="works-fan__index"><small>NO.</small><b>{String(index + 1).padStart(2, '0')}</b></span><i>{project.meta}</i></header>
         <div className={`works-fan__vertical${project.title.length > 12 ? ' is-long' : ''}`}><b>{project.title}</b><small>{project.en}</small></div>
@@ -333,14 +507,42 @@ function Works({ onOpen, requestedFilter }) {
           <span>{project.en}</span>
           <h3>{project.title}</h3>
           <p>{project.desc}</p>
-          <button type="button" onClick={() => onOpen(project)}>查看项目</button>
+          <button type="button" onMouseEnter={() => warmProjectAssets(project)} onClick={() => { warmProjectAssets(project); onOpen(project) }}>查看项目</button>
         </div>
       </article>)}
     </div> : filter === 'visual' && visualGroup === 'rural'
-      ? <CircularGallery items={ruralGalleryItems} bend={1.35} scrollSpeed={0.48} scrollEase={0.065} onSelect={item => onOpen(item.project)} />
+      ? <CircularGallery items={ruralGalleryItems} bend={1.35} scrollSpeed={0.48} scrollEase={0.065} onPreview={item => warmProjectAssets(item.project)} onSelect={item => { warmProjectAssets(item.project); onOpen(item.project) }} />
       : <div className="works__empty works__empty--upload"><span>OPERATION DESIGN</span><b>运营设计作品待上传</b><p>相关项目素材将在整理完成后更新至此模块。</p></div>}
-    </div>
+    </motion.div>
+    </AnimatePresence>
   </section>
+}
+
+function OperationGallery({ projects, onOpen }) {
+  if (projects.length > 4) {
+    return <Masonry
+      items={projects.map(project => ({ id: project.id, img: project.image, alt: project.title }))}
+      animateFrom="top"
+      duration={0.78}
+      stagger={0.1}
+      blurToFocus
+    />
+  }
+  const groupVariants = { hidden: {}, visible: { transition: { delayChildren: .03, staggerChildren: .1 } } }
+  const itemVariants = {
+    hidden: { opacity: 0, x: -34, clipPath: 'inset(0 100% 0 0 round 20px)', filter: 'blur(4px)' },
+    visible: { opacity: 1, x: 0, clipPath: 'inset(0 0% 0 0 round 20px)', filter: 'blur(0px)', transition: { duration: .72, ease: [0.16, 1, 0.3, 1] } }
+  }
+  return <div className={`operation-gallery operation-gallery--${projects.length > 4 ? 'campaign' : 'graphic'}`}>
+    <motion.div className="operation-gallery__grid" variants={groupVariants} initial="hidden" animate="visible">
+      {projects.map((project, index) => <motion.button variants={itemVariants} className="operation-piece" type="button" key={project.id} style={{ '--piece-order': index }} onMouseEnter={() => warmProjectAssets(project)} onFocus={() => warmProjectAssets(project)} onClick={() => { warmProjectAssets(project); onOpen(project) }}>
+        <img src={project.image} alt="" loading="eager" fetchPriority={index < 2 ? 'high' : 'auto'} decoding="async" />
+        <span className="operation-piece__no">{project.no}</span>
+        <div className="operation-piece__veil" />
+        <div className="operation-piece__copy"><small>{project.type} / {project.en}</small><strong>{project.title}</strong><i>VIEW PROJECT</i></div>
+      </motion.button>)}
+    </motion.div>
+  </div>
 }
 
 function Ending() {
@@ -351,25 +553,54 @@ function Ending() {
       <p>如果你正在寻找一位<br />关注细节，也理解系统的设计师——</p>
       <h2>LET'S CREATE<br /><em>VALUE TOGETHER.</em></h2>
       <div className="ending__actions">
-        <a href="mailto:2468993903@qq.com">2468993903@QQ.COM <b>↗</b></a>
+        <a href="mailto:wangtongyan@ieslab.cn">wangtongyan@ieslab.cn</a>
         <a className="resume-download" href="#" aria-label="下载王同焱的个人作品集">
           <span className="resume-download__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 18v2h14v-2"/></svg></span>
           <span className="resume-download__copy"><strong>下载作品集</strong><small>PORTFOLIO / PDF</small></span>
-          <b>↘</b>
         </a>
       </div>
-      <div className="ending__foot"><div><span>BASED IN</span><b>SHANGHAI · CHINA</b></div><div><span>SOCIAL</span><b>BEHANCE · LINKEDIN · 小红书</b></div><div><span>COPYRIGHT</span><b>© 2026 ALL RIGHTS RESERVED</b></div><a href="#home">BACK TO TOP ↑</a></div>
+      <div className="ending__foot"><div><span>BASED IN</span><b>JINAN · CHINA</b></div><div><span>SOCIAL</span><b>BEHANCE · LINKEDIN · 小红书</b></div><div><span>COPYRIGHT</span><b>© 2026 ALL RIGHTS RESERVED</b></div><a href="#home">BACK TO TOP ↑</a></div>
     </div>
   </footer>
 }
 
 function ProjectModal({ project, onClose }) {
-  useEffect(() => {
-    const handler = event => event.key === 'Escape' && onClose()
+  const onCloseRef = useRef(onClose)
+  onCloseRef.current = onClose
+
+  useLayoutEffect(() => {
+    const scrollTop = window.scrollY
+    const body = document.body
+    const scrollbarGap = Math.max(0, window.innerWidth - document.documentElement.clientWidth)
+    const previous = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+      overflow: body.style.overflow,
+      paddingRight: body.style.paddingRight
+    }
+    const handler = event => event.key === 'Escape' && onCloseRef.current()
+
     window.addEventListener('keydown', handler)
-    document.body.classList.add('modal-open')
-    return () => { window.removeEventListener('keydown', handler); document.body.classList.remove('modal-open') }
-  }, [onClose])
+    body.classList.add('modal-open')
+    body.style.position = 'fixed'
+    body.style.top = `-${scrollTop}px`
+    body.style.left = '0'
+    body.style.right = '0'
+    body.style.width = '100%'
+    body.style.overflow = 'hidden'
+    if (scrollbarGap) body.style.paddingRight = `${scrollbarGap}px`
+
+    return () => {
+      window.removeEventListener('keydown', handler)
+      body.classList.remove('modal-open')
+      Object.assign(body.style, previous)
+      window.scrollTo(0, scrollTop)
+      window.requestAnimationFrame(() => window.scrollTo(0, scrollTop))
+    }
+  }, [])
   const gallery = project.gallery || [{ src: project.image, label: project.title }]
   return <div className="modal project-view" onMouseDown={event => event.target === event.currentTarget && onClose()}>
     <article className="modal__panel project-view__panel">
@@ -388,10 +619,18 @@ function ProjectModal({ project, onClose }) {
         <div className="project-view__title"><small>{project.en}</small><h2>{project.title}</h2><p>{project.desc || '围绕真实业务场景建立清晰、可靠且高效的数字化体验。'}</p></div>
         <div className="project-view__meta"><span>ROLE</span><b>UI / UX DESIGN</b><span>DOMAIN</span><b>{project.type || 'DIGITAL'}</b><span>SCREENS</span><b>{String(gallery.length).padStart(2,'0')}</b></div>
       </header>
-      <figure className="project-view__hero"><div className="project-view__screen"><div className="project-view__screenbar"><span/><span/><span/><b>PROJECT VISUAL / {project.no || '01'}</b></div><img src={project.image} alt={`${project.title}项目主视觉`}/></div><figcaption><span>01</span><b>项目主视觉</b><i>KEY VISUAL</i></figcaption></figure>
+      {project.document && <section className="project-view__document">
+        <div className="project-view__document-head"><span>DESIGN SYSTEM / 视觉规范</span><b>FULL DOCUMENT</b></div>
+        <div className="project-view__document-frame">
+          <iframe src={`${project.document}#view=FitH&toolbar=0&navpanes=0`} title={`${project.title} Web 视觉规范`} loading="lazy" />
+        </div>
+        <p>完整展示 PMS 3.0 Web 视觉规范，可在文档区域内连续滚动阅读全部页面。</p>
+      </section>}
       <section className="project-view__gallery">
         <div className="project-view__gallery-head"><span>INTERFACE SYSTEM</span><b>{String(gallery.length).padStart(2,'0')} SCREENS</b></div>
-        {gallery.map((item,index) => <figure key={item.src} className="project-view__shot"><div><div className="project-view__screenbar"><span/><span/><span/><b>SCREEN / {String(index + 1).padStart(2,'0')}</b></div><img src={item.src} alt={`${project.title} · ${item.label}`}/></div><figcaption><span>{String(index + 2).padStart(2,'0')}</span><b>{item.label}</b><i>{project.meta}</i></figcaption></figure>)}
+        <div className={`project-view__gallery-grid${project.id === 'homestead-assistant' ? ' is-compact' : ''}`}>
+          {gallery.map((item,index) => <figure key={item.src} className="project-view__shot"><div><div className="project-view__screenbar"><span/><span/><span/><b>SCREEN / {String(index + 1).padStart(2,'0')}</b></div><img src={item.src} alt={`${project.title} · ${item.label}`} loading="lazy" decoding="async"/></div><figcaption><span>{String(index + 1).padStart(2,'0')}</span><b>{item.label}</b><i>{project.meta}</i></figcaption></figure>)}
+        </div>
       </section>
       <footer className="project-view__footer"><span>HUOHUO / 火火</span><b>END OF PROJECT</b><button type="button" onClick={onClose}>返回作品集</button></footer>
     </article>
@@ -456,6 +695,16 @@ function App() {
   const [requestedFilter, setRequestedFilter] = useState('visual')
   const revealSite = useCallback(() => setSiteReady(true), [])
   const finishLoader = useCallback(() => setLoaderVisible(false), [])
+  useEffect(() => {
+    if (!siteReady) return undefined
+    const preload = () => portfolioCoverSources.forEach(preloadImage)
+    if ('requestIdleCallback' in window) {
+      const idleId = window.requestIdleCallback(preload, { timeout: 1600 })
+      return () => window.cancelIdleCallback(idleId)
+    }
+    const timer = window.setTimeout(preload, 350)
+    return () => window.clearTimeout(timer)
+  }, [siteReady])
   useLayoutEffect(() => {
     if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual'
     if (window.location.hash) {
@@ -469,7 +718,7 @@ function App() {
     if (!siteReady) return undefined
     const selector = [
       '.section-title', '.about__transition', '.about__header', '.about__photo-stage', '.about__copy', '.about__numbers',
-      '.timeline__item', '.works__toolbar', '.works-fan',
+      '.experience__nav', '.timeline__item', '.works__toolbar', '.works-fan',
       '.ending__top', '.ending__inner>p', '.ending h2', '.ending__actions', '.ending__foot'
     ].join(',')
     const elements = [...document.querySelectorAll(selector)]

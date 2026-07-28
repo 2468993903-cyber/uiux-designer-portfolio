@@ -3,7 +3,7 @@ import './CircularGallery.css'
 
 const wrap = (value, length) => ((value % length) + length) % length
 
-export default function CircularGallery({ items = [], bend = 3, scrollSpeed = 1.8, scrollEase = 0.08, onSelect }) {
+export default function CircularGallery({ items = [], bend = 3, scrollSpeed = 1.8, scrollEase = 0.08, onPreview, onSelect }) {
   const rootRef = useRef(null)
   const targetRef = useRef(0)
   const currentRef = useRef(0)
@@ -77,6 +77,8 @@ export default function CircularGallery({ items = [], bend = 3, scrollSpeed = 1.
           className={`circular-gallery__card${distance < .55 ? ' is-center' : ''}`}
           key={item.text}
           style={{ '--x': `${x}px`, '--y': `${y}px`, '--r': `${angle}deg`, '--s': scale, '--z': Math.round(20 - distance * 3), '--opacity': Math.max(.42, 1 - distance * .15) }}
+          onPointerEnter={() => onPreview?.(item)}
+          onFocus={() => onPreview?.(item)}
           onClick={() => {
             targetRef.current += offset
             onSelect?.(item)

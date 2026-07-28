@@ -1,0 +1,23 @@
+.card-swap-container{
+  position:relative;
+  width:100%;
+  height:100%;
+  perspective:1100px;
+  overflow:visible;
+}
+.card-swap-card{
+  position:absolute;
+  top:50%;
+  left:50%;
+  overflow:hidden;
+  border:1px solid rgba(255,166,82,.42);
+  border-radius:22px;
+  background:#0d0907;
+  box-shadow:0 24px 58px rgba(0,0,0,.55),0 12px 26px rgba(255,89,27,.09);
+  transform-style:preserve-3d;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  will-change:transform;
+  cursor:pointer;
+}
+.card-swap-card:focus-visible{outline:2px solid #ff9b4d;outline-offset:4px}

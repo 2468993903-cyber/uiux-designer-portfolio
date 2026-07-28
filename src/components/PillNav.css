@@ -8,3 +8,4 @@
 .pill-filter-nav--sub .pill-filter.is-active{border-color:transparent;background:transparent;box-shadow:none;color:#f0e9e1}
 .pill-filter-nav--sub .pill-filter.is-active:after{display:none}
 @media(max-width:700px){.pill-filter-nav--sub{grid-template-columns:repeat(2,154px);gap:6px}.pill-filter-nav--sub .pill-filter-nav__slider{width:154px;transform:translate3d(calc(var(--pill-active-index) * 160px),0,0)}.pill-filter-nav--sub .pill-filter{min-width:154px;width:154px;height:38px;padding:0 10px}.pill-filter-nav--sub .pill-filter__label b{font-size:11px}}
+.works__toolbar .pill-filter{min-height:70px}.works__toolbar .pill-filter__stack{align-self:center;transform-origin:center}.works__toolbar .pill-filter__circle{pointer-events:none}
