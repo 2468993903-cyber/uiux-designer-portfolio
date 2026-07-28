@@ -49,8 +49,8 @@ const buildProjectGallery = (basePath, files, label = '项目界面') => files.m
 
 const projects = [
   // Previous concept covers are retained in each project folder as cover-generated.png.
-  { id: 'city', category: 'visual', no: '01', title: '山东电力交易中心可视化大屏', type: '调度', en: 'SHANDONG POWER TRADING CENTER', desc: '面向电力交易调度场景，集中呈现市场运行、交易计划与关键指标。', meta: 'DATA VISUALIZATION', image: '/assets/projects/city/cover-thumb.webp', detailImage: '/assets/projects/city/cover-photo-v2.png', gallery: [{src:'/assets/projects/city/overview.jpg',label:'电力市场概况'},{src:'/assets/projects/city/intra-province.png',label:'省内市场'},{src:'/assets/projects/city/inter-province.png',label:'省间市场'}] },
-  { id: 'energy', category: 'visual', no: '02', title: '潍坊调度中心驾驶舱', type: '调度', en: 'WEIFANG DISPATCH COCKPIT', desc: '整合电网运行态势、调度任务与异常告警的综合驾驶舱。', meta: 'DISPATCH CENTER', image: '/assets/projects/energy/cover-thumb.webp', detailImage: '/assets/projects/energy/cover-photo-v2.png', gallery: [{src:'/assets/projects/energy/device-monitor.png',label:'设备监控'},{src:'/assets/projects/energy/satellite.png',label:'卫星云图'},{src:'/assets/projects/energy/collaboration.png',label:'主配协同'},{src:'/assets/projects/energy/power-flow.png',label:'潮流图'}] },
+  { id: 'city', category: 'visual', no: '01', title: '山东电力交易中心可视化大屏', type: '调度', en: 'SHANDONG POWER TRADING CENTER', desc: '面向电力交易调度场景，集中呈现市场运行、交易计划与关键指标。', meta: 'DATA VISUALIZATION', image: '/assets/projects/city/cover-thumb.webp', detailImage: '/assets/projects/city/cover-photo-v2.png', gallery: [{src:'/assets/projects/city/inter-province.png',label:'省间市场'},{src:'/assets/projects/city/intra-province.png',label:'省内市场'},{src:'/assets/projects/city/overview.jpg',label:'电力市场概况'}] },
+  { id: 'energy', category: 'visual', no: '02', title: '潍坊调度中心驾驶舱', type: '调度', en: 'WEIFANG DISPATCH COCKPIT', desc: '整合电网运行态势、调度任务与异常告警的综合驾驶舱。', meta: 'DISPATCH CENTER', image: '/assets/projects/energy/cover-thumb.webp', detailImage: '/assets/projects/energy/cover-photo-v2.png', gallery: [{src:'/assets/projects/energy/power-flow.png',label:'潮流图'},{src:'/assets/projects/energy/satellite.png',label:'卫星云图'},{src:'/assets/projects/energy/device-monitor.png',label:'设备监控'},{src:'/assets/projects/energy/collaboration.png',label:'主配协同'}] },
   { id: 'factory', category: 'pc', no: '03', title: '工业数字孪生平台', en: 'INDUSTRIAL DIGITAL TWIN', desc: '连接设备、生产与业务的企业级桌面工作台。', meta: 'PC / WEB · 2024', image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1800&q=90' },
   { id: 'travel', category: 'mobile', no: '04', title: '城市出行服务', en: 'URBAN MOBILITY APP', desc: '为高频通勤场景设计的一站式移动出行体验。', meta: 'MOBILE APP · 2023', image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1800&q=90' },
   { id: 'ai', category: 'ai', no: '05', title: 'AI 数据洞察助手', en: 'AI INSIGHT COPILOT', desc: '将自然语言与数据查询、归因分析连接起来。', meta: 'AI PRODUCT · 2025', image: 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1800&q=90' },
@@ -99,7 +99,7 @@ const projects = [
     meta: 'MOBILE APP',
     image: '/assets/projects/mobile/kerry-red-station/cover-thumb.webp',
     detailImage: '/assets/projects/mobile/kerry-red-station/01.png',
-    gallery: buildProjectGallery('/assets/projects/mobile/kerry-red-station', ['02.png', '03.png', '04.png', '05.png', '06.png', '07.png', '08.png', '09.png', '10.png', '11.png', '12.png', '13.png', '14.png', '15.png'], '设计展示'),
+    gallery: buildProjectGallery('/assets/projects/mobile/kerry-red-station', ['01.png', '02.png', '03.png', '04.png', '05.png', '06.png', '07.png', '08.png', '09.png', '10.png', '11.png', '12.png', '13.png', '14.png', '15.png'], '设计展示'),
   },
   {
     id: 'lover-bay',
@@ -112,7 +112,7 @@ const projects = [
     meta: 'MOBILE APP',
     image: '/assets/projects/mobile/lover-bay/cover-thumb.webp',
     detailImage: '/assets/projects/mobile/lover-bay/01.png',
-    gallery: buildProjectGallery('/assets/projects/mobile/lover-bay', ['02.png', '03.png', '04.png', '05.png', '06.png', '07.png', '08.png', '09.png', '10.png', '11.png', '12.jpg'], '设计展示'),
+    gallery: buildProjectGallery('/assets/projects/mobile/lover-bay', ['01.png', '02.png', '03.png', '04.png', '05.png', '06.png', '07.png', '08.png', '09.png', '10.png', '11.png', '12.jpg'], '设计展示'),
   },
   {
     id: 'homestead-assistant',
@@ -195,25 +195,28 @@ const operationProjects = {
       id: 'graphic-brochure', category: 'operation', no: '01', title: '宅基地宣传三折页', type: '折页设计', en: 'HOMESTEAD BROCHURE',
       desc: '围绕宅基地政策传播梳理内容层级，以折页结构承载高密度信息。',
       meta: 'GRAPHIC / BROCHURE', image: '/assets/projects/operation/graphic/brochure/01.jpg',
-      gallery: [{ src: '/assets/projects/operation/graphic/brochure/02.jpg', label: '三折页背面' }],
+      gallery: [
+        { src: '/assets/projects/operation/graphic/brochure/01.jpg', label: '三折页封面' },
+        { src: '/assets/projects/operation/graphic/brochure/02.jpg', label: '三折页背面' },
+      ],
     },
     {
       id: 'graphic-dingyuan', category: 'operation', no: '02', title: '定远县宅基地试点工作手册', type: '手册设计', en: 'DINGYUAN HOMESTEAD MANUAL',
       desc: '将两项试点工作内容转译为结构清晰、便于汇报与阅读的完整手册。',
       meta: 'GRAPHIC / MANUAL', image: '/assets/projects/operation/graphic/dingyuan/01.jpg',
-      gallery: Array.from({ length: 19 }, (_, index) => ({ src: `/assets/projects/operation/graphic/dingyuan/${String(index + 2).padStart(2, '0')}.jpg`, label: `手册内页 ${String(index + 2).padStart(2, '0')}` })),
+      gallery: Array.from({ length: 20 }, (_, index) => ({ src: `/assets/projects/operation/graphic/dingyuan/${String(index + 1).padStart(2, '0')}.jpg`, label: index === 0 ? '手册封面' : `手册内页 ${String(index + 1).padStart(2, '0')}` })),
     },
     {
       id: 'graphic-dispatch', category: 'operation', no: '03', title: '调度系统视觉方案', type: '方案设计', en: 'DISPATCH SYSTEM PROPOSAL',
       desc: '面向调度系统方案汇报，建立统一的视觉叙事与页面节奏。',
       meta: 'GRAPHIC / PROPOSAL', image: '/assets/projects/operation/graphic/dispatch/01.jpg',
-      gallery: Array.from({ length: 3 }, (_, index) => ({ src: `/assets/projects/operation/graphic/dispatch/${String(index + 2).padStart(2, '0')}.jpg`, label: `方案页面 ${String(index + 2).padStart(2, '0')}` })),
+      gallery: Array.from({ length: 4 }, (_, index) => ({ src: `/assets/projects/operation/graphic/dispatch/${String(index + 1).padStart(2, '0')}.jpg`, label: index === 0 ? '方案封面' : `方案页面 ${String(index + 1).padStart(2, '0')}` })),
     },
     {
       id: 'graphic-nanqiao', category: 'operation', no: '04', title: '南谯区乡村振兴产业融合示范区', type: '规划视觉', en: 'NANQIAO RURAL REVITALIZATION',
       desc: '以区域规划、产业分区与空间关系为核心的信息视觉表达。',
       meta: 'GRAPHIC / PLANNING', image: '/assets/projects/operation/graphic/nanqiao/01.png',
-      gallery: Array.from({ length: 5 }, (_, index) => ({ src: `/assets/projects/operation/graphic/nanqiao/${String(index + 2).padStart(2, '0')}.png`, label: `规划设计 ${String(index + 2).padStart(2, '0')}` })),
+      gallery: Array.from({ length: 6 }, (_, index) => ({ src: `/assets/projects/operation/graphic/nanqiao/${String(index + 1).padStart(2, '0')}.png`, label: index === 0 ? '规划封面' : `规划设计 ${String(index + 1).padStart(2, '0')}` })),
     },
   ],
   campaign: [
