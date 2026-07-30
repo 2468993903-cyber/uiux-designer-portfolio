@@ -13,7 +13,6 @@ import CircularGallery from './components/CircularGallery'
 import EvilEye from './components/EvilEye'
 import CardSwap, { Card as SwapCard } from './components/CardSwap'
 import Masonry from './components/Masonry'
-// import ShinyText from './components/ShinyText'
 import './styles.css'
 
 const heroProjects = [
@@ -48,7 +47,6 @@ const buildProjectGallery = (basePath, files, label = '项目界面') => files.m
 }))
 
 const projects = [
-  // Previous concept covers are retained in each project folder as cover-generated.png.
   { id: 'city', category: 'visual', no: '01', title: '山东电力交易中心可视化大屏', type: '调度', en: 'SHANDONG POWER TRADING CENTER', desc: '面向电力交易调度场景，集中呈现市场运行、交易计划与关键指标。', meta: 'DATA VISUALIZATION', image: '/assets/projects/city/cover-thumb.webp', detailImage: '/assets/projects/city/cover-photo-v2.png', gallery: [{src:'/assets/projects/city/inter-province.png',label:'省间市场'},{src:'/assets/projects/city/intra-province.png',label:'省内市场'},{src:'/assets/projects/city/overview.jpg',label:'电力市场概况'}] },
   { id: 'energy', category: 'visual', no: '02', title: '潍坊调度中心驾驶舱', type: '调度', en: 'WEIFANG DISPATCH COCKPIT', desc: '整合电网运行态势、调度任务与异常告警的综合驾驶舱。', meta: 'DISPATCH CENTER', image: '/assets/projects/energy/cover-thumb.webp', detailImage: '/assets/projects/energy/cover-photo-v2.png', gallery: [{src:'/assets/projects/energy/power-flow.png',label:'潮流图'},{src:'/assets/projects/energy/satellite.png',label:'卫星云图'},{src:'/assets/projects/energy/device-monitor.png',label:'设备监控'},{src:'/assets/projects/energy/collaboration.png',label:'主配协同'}] },
   { id: 'factory', category: 'pc', no: '03', title: '工业数字孪生平台', en: 'INDUSTRIAL DIGITAL TWIN', desc: '连接设备、生产与业务的企业级桌面工作台。', meta: 'PC / WEB · 2024', image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1800&q=90' },
@@ -451,6 +449,7 @@ function Works({ onOpen, requestedFilter }) {
   const [operationGroup, setOperationGroup] = useState('graphic')
   const [active, setActive] = useState(0)
   const [mobileActive, setMobileActive] = useState(0)
+  const [mobileSelectionRequest, setMobileSelectionRequest] = useState(null)
   const visible = useMemo(() => {
     if (filter === 'operation') return operationProjects[operationGroup]
     const categoryProjects = projects.filter(project => project.category === filter)
@@ -486,10 +485,10 @@ function Works({ onOpen, requestedFilter }) {
         <span>MOBILE EXPERIENCE / 03</span>
         <h3><span>三种场景，</span><em>一套清晰体验。</em></h3>
         <p>从职工服务、年轻社交到基层监管，以真实项目素材呈现移动端产品的设计经验。</p>
-        <div className="mobile-swap__markers" style={{ '--mobile-active': mobileActive }}>{visible.map((project, index) => <i className={mobileActive === index ? 'is-active' : ''} key={project.id}>{String(index + 1).padStart(2, '0')}</i>)}</div>
+        <div className="mobile-swap__markers" style={{ '--mobile-active': mobileActive }}>{visible.map((project, index) => <button type="button" className={mobileActive === index ? 'is-active' : ''} key={project.id} aria-label={`将${project.title}切换到最上层`} aria-pressed={mobileActive === index} onClick={() => { setMobileActive(index); setMobileSelectionRequest({ index }) }}>{String(index + 1).padStart(2, '0')}</button>)}</div>
       </div>
       <div className="mobile-swap__deck">
-        <CardSwap width="min(580px, 42vw)" height="395px" cardDistance={34} verticalDistance={28} delay={5600} skewAmount={1.2} onActiveChange={setMobileActive} onCardClick={index => onOpen(visible[index])}>
+        <CardSwap width="min(580px, 42vw)" height="395px" cardDistance={34} verticalDistance={28} delay={5600} skewAmount={1.2} selectionRequest={mobileSelectionRequest} onActiveChange={setMobileActive} onCardClick={index => onOpen(visible[index])}>
           {visible.map((project, index) => <SwapCard key={project.id} data-project={project.id} tabIndex={0} aria-label={`查看${project.title}`} onMouseEnter={() => warmProjectAssets(project)} onFocus={() => warmProjectAssets(project)}>
             <img src={project.image} alt="" decoding="async" />
             <div className="mobile-swap__shade" />

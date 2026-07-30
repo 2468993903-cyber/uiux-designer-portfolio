@@ -33,9 +33,11 @@ export default function CardSwap({
   cardDistance = 48,
   verticalDistance = 44,
   delay = 5200,
+  manualResumeDelay = 5000,
   pauseOnHover = true,
   onCardClick,
   onActiveChange,
+  selectionRequest,
   skewAmount = 2.5,
   children,
 }) {
@@ -44,6 +46,8 @@ export default function CardSwap({
   const order = useRef(Array.from({ length: childArray.length }, (_, index) => index))
   const timelineRef = useRef(null)
   const intervalRef = useRef()
+  const resumeTimeoutRef = useRef()
+  const restartIntervalRef = useRef(null)
   const containerRef = useRef(null)
 
   useEffect(() => {
@@ -86,7 +90,21 @@ export default function CardSwap({
       })
     }
 
-    intervalRef.current = window.setInterval(swap, delay)
+    const restartInterval = () => {
+      window.clearTimeout(resumeTimeoutRef.current)
+      window.clearInterval(intervalRef.current)
+      intervalRef.current = window.setInterval(swap, delay)
+    }
+    const restartAfterManualSelection = () => {
+      window.clearTimeout(resumeTimeoutRef.current)
+      window.clearInterval(intervalRef.current)
+      resumeTimeoutRef.current = window.setTimeout(() => {
+        swap()
+        intervalRef.current = window.setInterval(swap, delay)
+      }, manualResumeDelay)
+    }
+    restartIntervalRef.current = restartAfterManualSelection
+    restartInterval()
     const node = containerRef.current
     const pause = () => {
       timelineRef.current?.pause()
@@ -94,8 +112,7 @@ export default function CardSwap({
     }
     const resume = () => {
       timelineRef.current?.play()
-      window.clearInterval(intervalRef.current)
-      intervalRef.current = window.setInterval(swap, delay)
+      restartInterval()
     }
     if (pauseOnHover) {
       node.addEventListener('mouseenter', pause)
@@ -103,14 +120,46 @@ export default function CardSwap({
     }
 
     return () => {
+      window.clearTimeout(resumeTimeoutRef.current)
       window.clearInterval(intervalRef.current)
+      restartIntervalRef.current = null
       timelineRef.current?.kill()
       if (pauseOnHover) {
         node.removeEventListener('mouseenter', pause)
         node.removeEventListener('mouseleave', resume)
       }
     }
-  }, [cardDistance, verticalDistance, delay, pauseOnHover, skewAmount, refs, onActiveChange])
+  }, [cardDistance, verticalDistance, delay, manualResumeDelay, pauseOnHover, skewAmount, refs, onActiveChange])
+
+  useEffect(() => {
+    const selectedIndex = selectionRequest?.index
+    if (!Number.isInteger(selectedIndex) || !refs[selectedIndex]) return
+    const currentPosition = order.current.indexOf(selectedIndex)
+    if (currentPosition < 0) return
+    restartIntervalRef.current?.()
+    onActiveChange?.(selectedIndex)
+
+    timelineRef.current?.kill()
+    const total = refs.length
+    const nextOrder = [selectedIndex, ...order.current.filter(index => index !== selectedIndex)]
+    const timeline = gsap.timeline({
+      onComplete: () => { order.current = nextOrder },
+    })
+    timelineRef.current = timeline
+
+    nextOrder.forEach((cardIndex, position) => {
+      const slot = makeSlot(position, cardDistance, verticalDistance, total)
+      timeline.set(refs[cardIndex].current, { zIndex: slot.zIndex }, 0)
+      timeline.to(refs[cardIndex].current, {
+        x: slot.x,
+        y: slot.y,
+        z: slot.z,
+        skewY: skewAmount,
+        duration: .72,
+        ease: 'power2.inOut',
+      }, 0)
+    })
+  }, [cardDistance, onActiveChange, refs, selectionRequest, skewAmount, verticalDistance])
 
   const rendered = childArray.map((child, index) => isValidElement(child)
     ? cloneElement(child, {
