@@ -49,7 +49,7 @@ export default function Masonry({
           key={`${item.id}-${image.src}`}
           src={image.src}
           alt={image.alt || ''}
-          loading="eager"
+          loading={imageIndex === 0 ? 'eager' : 'lazy'}
           fetchPriority={item.order < columnCount && imageIndex === 0 ? 'high' : 'auto'}
           decoding="async"
         />)}

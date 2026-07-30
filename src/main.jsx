@@ -259,10 +259,8 @@ const warmProjectAssets = project => {
 const portfolioCoverSources = [
   ...heroProjects.map(project => project.image),
   ...projects
-    .filter(project => powerProjectIds.has(project.id) || Object.values(categoryProjectIds).some(ids => ids.has(project.id)))
+    .filter(project => powerProjectIds.has(project.id))
     .map(project => project.image),
-  ...Object.values(operationProjects).flat().map(project => project.image),
-  ...ruralGalleryCovers.map(project => project.image),
 ]
 
 function Loader({ onReveal, onDone }) {
@@ -664,7 +662,7 @@ function ProjectModal({ project, onClose }) {
       <section className={`project-view__gallery${isCampaignProject ? ' project-view__gallery--campaign' : ''}`}>
         <div className="project-view__gallery-head"><span>{isCampaignProject ? 'ORIGINAL ARTWORK / 原始设计' : 'INTERFACE SYSTEM'}</span><b>{String(gallery.length).padStart(2,'0')} {isCampaignProject ? 'ARTWORK' : 'SCREENS'}</b></div>
         <div className={`project-view__gallery-grid${project.id === 'homestead-assistant' ? ' is-compact' : ''}${isSeamlessGallery ? ' is-seamless' : ''}${isCampaignProject ? ' is-campaign-original' : ''}`}>
-          {gallery.map((item,index) => <figure key={item.src} className="project-view__shot"><div><div className="project-view__screenbar"><span/><span/><span/><b>{isCampaignProject ? 'ARTWORK' : 'SCREEN'} / {String(index + 1).padStart(2,'0')}</b></div><img src={item.src} alt={`${project.title} · ${item.label}`} loading={isCampaignProject ? 'eager' : 'lazy'} decoding="async"/></div><figcaption><span>{String(index + 1).padStart(2,'0')}</span><b>{item.label}</b><i>{project.meta}</i></figcaption></figure>)}
+          {gallery.map((item,index) => <figure key={item.src} className="project-view__shot"><div><div className="project-view__screenbar"><span/><span/><span/><b>{isCampaignProject ? 'ARTWORK' : 'SCREEN'} / {String(index + 1).padStart(2,'0')}</b></div><img src={item.src} alt={`${project.title} · ${item.label}`} loading="lazy" decoding="async"/></div><figcaption><span>{String(index + 1).padStart(2,'0')}</span><b>{item.label}</b><i>{project.meta}</i></figcaption></figure>)}
         </div>
       </section>
       <footer className="project-view__footer"><span>HUOHUO / 火火</span><b>END OF PROJECT</b><button type="button" onClick={onClose}>返回作品集</button></footer>

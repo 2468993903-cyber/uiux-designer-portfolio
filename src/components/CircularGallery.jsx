@@ -9,15 +9,26 @@ export default function CircularGallery({ items = [], bend = 3, scrollSpeed = 1.
   const currentRef = useRef(0)
   const dragRef = useRef({ active: false, x: 0, start: 0 })
   const rafRef = useRef(0)
+  const startAnimationRef = useRef(() => {})
   const [, render] = useState(0)
 
   useEffect(() => {
     const tick = () => {
-      currentRef.current += (targetRef.current - currentRef.current) * scrollEase
+      const delta = targetRef.current - currentRef.current
+      if (Math.abs(delta) < .001) {
+        currentRef.current = targetRef.current
+        rafRef.current = 0
+        render(value => value + 1)
+        return
+      }
+      currentRef.current += delta * scrollEase
       render(value => value + 1)
       rafRef.current = requestAnimationFrame(tick)
     }
-    rafRef.current = requestAnimationFrame(tick)
+    startAnimationRef.current = () => {
+      if (!rafRef.current) rafRef.current = requestAnimationFrame(tick)
+    }
+    startAnimationRef.current()
     return () => cancelAnimationFrame(rafRef.current)
   }, [scrollEase])
 
@@ -27,6 +38,7 @@ export default function CircularGallery({ items = [], bend = 3, scrollSpeed = 1.
     const onWheel = event => {
       event.preventDefault()
       targetRef.current += Math.sign(event.deltaY || event.deltaX) * scrollSpeed
+      startAnimationRef.current()
     }
     node.addEventListener('wheel', onWheel, { passive: false })
     return () => node.removeEventListener('wheel', onWheel)
@@ -42,10 +54,12 @@ export default function CircularGallery({ items = [], bend = 3, scrollSpeed = 1.
   const moveDrag = event => {
     if (!dragRef.current.active) return
     targetRef.current = dragRef.current.start + (dragRef.current.x - event.clientX) / 150
+    startAnimationRef.current()
   }
   const endDrag = () => {
     dragRef.current.active = false
     targetRef.current = Math.round(targetRef.current)
+    startAnimationRef.current()
   }
 
   return <div
@@ -59,8 +73,14 @@ export default function CircularGallery({ items = [], bend = 3, scrollSpeed = 1.
     onPointerUp={endDrag}
     onPointerCancel={endDrag}
     onKeyDown={event => {
-      if (event.key === 'ArrowRight') targetRef.current += 1
-      if (event.key === 'ArrowLeft') targetRef.current -= 1
+      if (event.key === 'ArrowRight') {
+        targetRef.current += 1
+        startAnimationRef.current()
+      }
+      if (event.key === 'ArrowLeft') {
+        targetRef.current -= 1
+        startAnimationRef.current()
+      }
     }}
   >
     <div className="circular-gallery__ambient" />
@@ -81,6 +101,7 @@ export default function CircularGallery({ items = [], bend = 3, scrollSpeed = 1.
           onFocus={() => onPreview?.(item)}
           onClick={() => {
             targetRef.current += offset
+            startAnimationRef.current()
             onSelect?.(item)
           }}
         >

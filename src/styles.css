@@ -108,7 +108,7 @@ html,body,#root{min-height:100%;overflow-x:clip}
 @keyframes hero-shine-layer-in{to{opacity:1}}
 /* Repeatable scroll choreography */
 .scroll-reveal{opacity:0;filter:blur(8px);transform:translate3d(0,38px,0);transition:opacity .8s cubic-bezier(.2,.65,.25,1),transform .9s cubic-bezier(.16,.78,.25,1),filter .8s ease;transition-delay:calc(var(--reveal-order,0) * 38ms);will-change:opacity,transform,filter}
-.scroll-reveal.is-revealed{opacity:1;filter:blur(0);transform:translate3d(0,0,0)}
+.scroll-reveal.is-revealed{opacity:1;filter:blur(0);transform:translate3d(0,0,0);will-change:auto}
 .about__photo-stage.scroll-reveal{transform:translate3d(-44px,28px,0);clip-path:inset(0 12% 0 0)}
 .about__photo-stage.scroll-reveal.is-revealed{transform:translate3d(0,0,0);clip-path:inset(0 0 0 0)}
 .about__copy.scroll-reveal{transform:translate3d(46px,24px,0)}
