@@ -45,13 +45,14 @@ export default function Masonry({
           ease: [0.2, 0.76, 0.22, 1]
         }}
       >
-        <img
-          src={item.img}
-          alt={item.alt || ''}
+        {(item.images?.length ? item.images : [{ src: item.img, alt: item.alt }]).map((image, imageIndex) => <img
+          key={`${item.id}-${image.src}`}
+          src={image.src}
+          alt={image.alt || ''}
           loading="eager"
-          fetchPriority={item.order < columnCount ? 'high' : 'auto'}
+          fetchPriority={item.order < columnCount && imageIndex === 0 ? 'high' : 'auto'}
           decoding="async"
-        />
+        />)}
       </motion.figure>)}
     </div>)}
   </div>
