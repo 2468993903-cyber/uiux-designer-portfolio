@@ -728,6 +728,18 @@ function App() {
   const revealSite = useCallback(() => setSiteReady(true), [])
   const finishLoader = useCallback(() => setLoaderVisible(false), [])
   useEffect(() => {
+    const hero = document.querySelector('.hero')
+    if (!hero) return undefined
+    const observer = new IntersectionObserver(([entry]) => {
+      document.body.classList.toggle('scan-after-hero', !entry.isIntersecting)
+    }, { threshold: 0.04 })
+    observer.observe(hero)
+    return () => {
+      observer.disconnect()
+      document.body.classList.remove('scan-after-hero')
+    }
+  }, [])
+  useEffect(() => {
     if (!siteReady) return undefined
     const preload = () => portfolioCoverSources.forEach(preloadImage)
     if ('requestIdleCallback' in window) {

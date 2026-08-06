@@ -717,3 +717,9 @@ html,body,#root{min-height:100%;overflow-x:clip}
 .project-view__flows figcaption{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:18px;font-family:var(--mono)}
 .project-view__flows figcaption span{display:grid;place-items:center;width:34px;height:34px;border:1px solid rgba(255,144,69,.4);border-radius:50%;color:#ff823e;font-size:9px}.project-view__flows figcaption b{font-size:10px;letter-spacing:.1em;color:#d8d1ca}
 @media(max-width:760px){.project-view__flows{padding:68px 18px}.project-view__flows-head{align-items:flex-start;gap:10px;flex-direction:column}}
+
+/* Subtle background scan retained from the discarded visual exploration. */
+#root:after{content:"";position:fixed;z-index:90;left:0;right:0;top:-18vh;height:18vh;pointer-events:none;opacity:0;background:linear-gradient(180deg,transparent,rgba(255,91,36,.09) 70%,rgba(255,76,24,.36));filter:blur(1px);transform:translate3d(0,0,0);will-change:transform;animation:background-scan 9s linear infinite;transition:opacity .35s ease}
+body.scan-after-hero #root:after{opacity:.22}
+@keyframes background-scan{to{transform:translate3d(0,136vh,0)}}
+@media(max-width:700px),(prefers-reduced-motion:reduce){#root:after{display:none}}
