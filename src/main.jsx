@@ -719,7 +719,13 @@ function AmbientMusic() {
   </>
 }
 
+// Temporarily keep the public URL available without rendering the portfolio.
+// Set to false to restore the complete site instantly on the next deployment.
+const PUBLIC_PAUSED = true
+
 function App() {
+  if (PUBLIC_PAUSED) return null
+
   const [loaderVisible, setLoaderVisible] = useState(true)
   const [siteReady, setSiteReady] = useState(false)
   const [heroReady, setHeroReady] = useState(false)
