@@ -17,6 +17,16 @@ npm run dev
 npm run build
 ```
 
+## 发布与跨设备修改
+
+- 线上网址：https://wuhuohuo.top
+- GitHub 仓库：git@github.com:2468993903-cyber/uiux-designer-portfolio.git
+- `main` 分支连接 Vercel；推送到 `main` 会触发线上部署。
+- 网站内容由 `src/main.jsx` 和 `src/styles.css` 驱动，项目图片位于 `public/assets/`。
+- `src/main.jsx` 中的 `PUBLIC_PAUSED` 控制公开页面：`false` 正常显示，`true` 暂时显示空白页。
+
+在另一台电脑安装 Node.js 18 或更高版本后，在项目目录运行 `npm install`、`npm run dev` 开始修改；确认后提交并推送到 `main` 发布。需要 GitHub 写入权限；不要复制本机凭据或 `.vercel` 本地登录信息。
+
 ## 当前页面结构
 
 1. 首页 Hero、0–100% 加载效果与典型项目横向卡片
